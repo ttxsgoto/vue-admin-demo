@@ -1,19 +1,52 @@
 <template>
     <section>
         <!--工具条-->
-        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-form-item>
-                    <el-input v-model="filters.name" placeholder="姓名"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" v-on:click="getUsers">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleAdd">新增</el-button>
-                </el-form-item>
+        <!--<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">-->
+        <!--<el-form :inline="true" :model="filters">-->
+        <!--<el-form-item>-->
+        <!--<el-input v-model="filters.name" placeholder="姓名"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item>-->
+        <!--<el-button type="primary" v-on:click="getUsers">查询</el-button>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item>-->
+        <!--<el-button type="primary" @click="handleAdd">新增</el-button>-->
+        <!--</el-form-item>-->
+        <!--</el-form>-->
+        <!--</el-col>-->
+        <div class="tab-screen">
+            <el-form class="search-filters-form" label-width="80px" :model="seachListParam" status-icon
+                     ref="seachHeadCarListFrom">
+                <el-row :gutter="0">
+                    <el-col :span="12">
+                        <el-input placeholder="请输入" v-model="fifterParam.keyword" class="search-filters-screen"
+                                  @keyup.native.13="searchList">
+                            <!--<el-select v-model="fifterParam.field" slot="prepend" placeholder="请选择">-->
+                            <!--<el-option v-for="(item,key) in selectData.fieldSelect" :key="key"-->
+                            <!--:label="item.value" :value="item.id"></el-option>-->
+                            <!--</el-select>-->
+                            <el-select v-model="fifterParam.field" slot="prepend" placeholder="请选择">
+                                <el-option
+                                        v-for="(item,key) in selectData.fieldSelect"
+                                        :key="key"
+                                        :label="item.value"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <el-button slot="append" @click="searchList"></el-button>
+                        </el-input>
+                    </el-col>
+                </el-row>
             </el-form>
-        </el-col>
+        </div>
+        <!--<el-select v-model="fifterParam.field" placeholder="请选择">-->
+        <!--<el-option-->
+        <!--v-for="(item,key) in selectData.fieldSelect"-->
+        <!--:key="key"-->
+        <!--:label="item.value"-->
+        <!--:value="item.id">-->
+        <!--</el-option>-->
+        <!--</el-select>-->
 
         <!--列表-->
         <!--<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange"-->
@@ -168,13 +201,26 @@
                     name: ''
                 },
                 tableData: [],
-                seachListParam: {
-
-                },
+                seachListParam: {},
                 total: 0,
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
+
+                // 新添加的东西
+                selectData: {
+                    fieldSelect: [
+                        {id: 'consumer_name', value: '客户名称'},
+                        {id: 'short_name', value: '客户简称'},
+                        {id: 'payer', value: '付款方名称'},
+                        {id: 'sale_man_name', value: '分属业务员'},
+                    ]
+                },
+                fifterParam: {
+                    keyword: "",
+                    field: "consumer_name",
+                },
+                // end
 
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
@@ -249,7 +295,7 @@
                 //     sendData.page = 1;
                 // }
                 // sendData.pageSize = vm.pageData.pageSize;
-                this.$$http01('searchCustomerPayList', sendData).then(function(result) {
+                this.$$http01('searchCustomerPayList', sendData).then(function (result) {
                     var resultData;
                     console.log('----->', result);
 
@@ -270,7 +316,7 @@
                         vm.pageData.totalPage = Math.ceil(result.data.data.count / vm.pageData.pageSize);
                         vm.pageLoading = false;
                     }
-                }).catch(function(error) {
+                }).catch(function (error) {
                     vm.pageLoading = false;
                 });
             },
@@ -392,7 +438,37 @@
     }
 
 </script>
-
-<style scoped>
+<style scoped lang="less">
+    /*@import '@/assets/css/tabsStyle.less'*/
+    .search-filters-form {
+        > .el-row {
+            padding: 10px 0;
+        }
+        .el-form-item {
+            margin-bottom: 0;
+        }
+        .search-filters-screen {
+            .el-select .el-input {
+                width: 180px;
+            }
+            .el-input-group__prepend {
+                background-color: #fff;
+            }
+        }
+        .el-input {
+            width: 100%;
+        }
+        .el-select {
+            width: 100%;
+        }
+        .el-date-editor--daterange {
+            &.el-input__inner {
+                width: 100%;
+            }
+        }
+    }
 
 </style>
+<!--<style scoped>-->
+
+<!--</style>-->
