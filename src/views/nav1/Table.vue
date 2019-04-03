@@ -39,6 +39,10 @@
                 </el-row>
             </el-form>
         </div>
+        <div class="operation-btn text-right">
+            <!-- <el-button type="primary" @click="exportList">导出</el-button> -->
+            <!--<el-button type="success" @click="addCustomerPayManage">新增</el-button>-->
+        </div>
         <!--<el-select v-model="fifterParam.field" placeholder="请选择">-->
         <!--<el-option-->
         <!--v-for="(item,key) in selectData.fieldSelect"-->
@@ -113,22 +117,34 @@
             </el-table-column>
             <el-table-column label="添加时间" align="center" prop="created_at">
             </el-table-column>
-            <el-table-column label="操作" align="center" width="150" fixed="right">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="jumpPage({operator:'show',rowData:scope.row})">查看
-                    </el-button>
-                </template>
+            <!--<el-table-column label="操作" align="center" width="150" fixed="right">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<el-button size="mini" type="primary" @click="jumpPage({operator:'show',rowData:scope.row})">查看-->
+                    <!--</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+            <el-table-column label="操作" width="150">
+            <template scope="scope">
+            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+            </template>
             </el-table-column>
-
-
         </el-table>
-
         <!--工具条-->
+        <!--<div class="page-list text-center">-->
+            <!--<el-pagination background layout="prev, pager, next,jumper" :page-count="pageData.totalPage" :page-size="pageData.pageSize" :current-page.sync="pageData.currentPage" @current-change="pageChange" v-if="!pageLoading && pageData.totalPage>1">-->
+            <!--</el-pagination>-->
+        <!--</div>-->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
-                           :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next, jumper"
+                           :page-count="pageData.totalPage"
+                           :page-size="pageData.pageSize"
+                           :current-page.sync="pageData.currentPage"
+                           @current-change="pageChange" v-if="!pageLoading && pageData.totalPage>1">
             </el-pagination>
+                           <!--@current-change="handleCurrentChange" :page-size="20"-->
+                           <!--:total="total" style="float:right;">-->
         </el-col>
 
         <!--编辑界面-->
@@ -216,6 +232,13 @@
                         {id: 'sale_man_name', value: '分属业务员'},
                     ]
                 },
+                pageStatus: false,
+                pageLoading: true,
+                pageData: {
+                    currentPage: 1,
+                    totalPage: 1,
+                    pageSize: 10,
+                },
                 fifterParam: {
                     keyword: "",
                     field: "consumer_name",
@@ -264,7 +287,7 @@
             },
             handleCurrentChange(val) {
                 this.page = val;
-                this.getUsers();
+                this.searchList();
             },
             //获取用户列表
             getUsers() {
@@ -313,6 +336,7 @@
                                 });
                             }
                         });
+                        // this.total = Math.ceil(result.data.data.count / vm.pageData.pageSize);
                         vm.pageData.totalPage = Math.ceil(result.data.data.count / vm.pageData.pageSize);
                         vm.pageLoading = false;
                     }
@@ -440,33 +464,33 @@
 </script>
 <style scoped lang="less">
     /*@import '@/assets/css/tabsStyle.less'*/
-    .search-filters-form {
-        > .el-row {
-            padding: 10px 0;
-        }
-        .el-form-item {
-            margin-bottom: 0;
-        }
-        .search-filters-screen {
-            .el-select .el-input {
-                width: 180px;
-            }
-            .el-input-group__prepend {
-                background-color: #fff;
-            }
-        }
-        .el-input {
-            width: 100%;
-        }
-        .el-select {
-            width: 100%;
-        }
-        .el-date-editor--daterange {
-            &.el-input__inner {
-                width: 100%;
-            }
-        }
-    }
+    /*.search-filters-form {*/
+        /*> .el-row {*/
+            /*padding: 10px 0;*/
+        /*}*/
+        /*.el-form-item {*/
+            /*margin-bottom: 0;*/
+        /*}*/
+        /*.search-filters-screen {*/
+            /*.el-select .el-input {*/
+                /*width: 180px;*/
+            /*}*/
+            /*.el-input-group__prepend {*/
+                /*background-color: #fff;*/
+            /*}*/
+        /*}*/
+        /*.el-input {*/
+            /*width: 100%;*/
+        /*}*/
+        /*.el-select {*/
+            /*width: 100%;*/
+        /*}*/
+        /*.el-date-editor--daterange {*/
+            /*&.el-input__inner {*/
+                /*width: 100%;*/
+            /*}*/
+        /*}*/
+    /*}*/
 
 </style>
 <!--<style scoped>-->
