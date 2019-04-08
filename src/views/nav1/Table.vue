@@ -33,7 +33,8 @@
                                         :value="item.id">
                                 </el-option>
                             </el-select>
-                            <el-button slot="append" @click="searchList"></el-button>
+                            <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                            <!--<el-button slot="append" @click="searchList"></el-button>-->
                         </el-input>
                     </el-col>
                 </el-row>
@@ -118,34 +119,38 @@
             <el-table-column label="添加时间" align="center" prop="created_at">
             </el-table-column>
             <!--<el-table-column label="操作" align="center" width="150" fixed="right">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<el-button size="mini" type="primary" @click="jumpPage({operator:'show',rowData:scope.row})">查看-->
-                    <!--</el-button>-->
-                <!--</template>-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-button size="mini" type="primary" @click="jumpPage({operator:'show',rowData:scope.row})">查看-->
+            <!--</el-button>-->
+            <!--</template>-->
             <!--</el-table-column>-->
             <el-table-column label="操作" width="150">
-            <template scope="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-            </template>
+                <template scope="scope">
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                </template>
             </el-table-column>
         </el-table>
         <!--工具条-->
         <!--<div class="page-list text-center">-->
-            <!--<el-pagination background layout="prev, pager, next,jumper" :page-count="pageData.totalPage" :page-size="pageData.pageSize" :current-page.sync="pageData.currentPage" @current-change="pageChange" v-if="!pageLoading && pageData.totalPage>1">-->
-            <!--</el-pagination>-->
+        <!--<el-pagination.css background layout="prev, pager, next,jumper" :page-count="pageData.totalPage" :page-size="pageData.pageSize" :current-page.sync="pageData.currentPage" @current-change="pageChange" v-if="!pageLoading && pageData.totalPage>1">-->
+        <!--</el-pagination.css>-->
         <!--</div>-->
-        <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+        <!--<el-col :span="24" class="toolbar">-->
+        <div class="page-list text-center">
+            <el-button class="pagination-button" type="danger" @click="batchRemove" :disabled="this.sels.length===0">
+                批量删除
+            </el-button>
             <el-pagination layout="prev, pager, next, jumper"
                            :page-count="pageData.totalPage"
                            :page-size="pageData.pageSize"
                            :current-page.sync="pageData.currentPage"
                            @current-change="pageChange" v-if="!pageLoading && pageData.totalPage>1">
             </el-pagination>
-                           <!--@current-change="handleCurrentChange" :page-size="20"-->
-                           <!--:total="total" style="float:right;">-->
-        </el-col>
+        </div>
+        <!--@current-change="handleCurrentChange" :page-size="20"-->
+        <!--:total="total" style="float:right;">-->
+        <!--</el-col>-->
 
         <!--编辑界面-->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
@@ -307,21 +312,18 @@
             searchList() {
                 var vm = this;
                 var sendData = this.pbFunc.deepcopy(this.seachListParam);
-                // sendData[this.fifterParam.field] = this.fifterParam.keyword;
+                sendData[this.fifterParam.field] = this.fifterParam.keyword;
 
                 vm.pageLoading = true;
-                // if (vm.pageStatus) {
-                //     sendData = this.saveSendData;
-                //     sendData.page = vm.pageData.currentPage;
-                // } else {
-                //     this.saveSendData = sendData;
-                //     sendData.page = 1;
-                // }
-                // sendData.pageSize = vm.pageData.pageSize;
+                if (vm.pageStatus) {
+                    sendData = this.saveSendData;
+                    sendData.page = vm.pageData.currentPage;
+                } else {
+                    this.saveSendData = sendData;
+                    sendData.page = 1;
+                }
+                sendData.pageSize = vm.pageData.pageSize;
                 this.$$http01('searchCustomerPayList', sendData).then(function (result) {
-                    var resultData;
-                    console.log('----->', result);
-
                     vm.pageStatus = false;
                     if (result.data.code == 0) {
                         vm.tableData = result.data.data.data;
@@ -342,6 +344,12 @@
                     }
                 }).catch(function (error) {
                     vm.pageLoading = false;
+                });
+            },
+            pageChange: function () {
+                setTimeout(() => {
+                    this.pageStatus = true;
+                    this.searchList();
                 });
             },
             //删除
@@ -463,33 +471,51 @@
 
 </script>
 <style scoped lang="less">
-    /*@import '@/assets/css/tabsStyle.less'*/
+    /*.page-list {*/
+        /*margin: 20px 0;*/
+    /*}*/
+    /*.text-center {*/
+        /*text-align: right;*/
+        /*.pagination-button {*/
+            /*float: left;*/
+            /*width: 200px;*/
+        /*}*/
+    /*}*/
+
+    /*.pagination.css {*/
+    /*text-align: right; //right*/
+    /*.pagination.css-button {*/
+    /*float:left;*/
+    /*width:200px;*/
+    /*}*/
+    /*}*/
+    /*@import '@/assets/css/list_fliter.less'*/
     /*.search-filters-form {*/
-        /*> .el-row {*/
-            /*padding: 10px 0;*/
-        /*}*/
-        /*.el-form-item {*/
-            /*margin-bottom: 0;*/
-        /*}*/
-        /*.search-filters-screen {*/
-            /*.el-select .el-input {*/
-                /*width: 180px;*/
-            /*}*/
-            /*.el-input-group__prepend {*/
-                /*background-color: #fff;*/
-            /*}*/
-        /*}*/
-        /*.el-input {*/
-            /*width: 100%;*/
-        /*}*/
-        /*.el-select {*/
-            /*width: 100%;*/
-        /*}*/
-        /*.el-date-editor--daterange {*/
-            /*&.el-input__inner {*/
-                /*width: 100%;*/
-            /*}*/
-        /*}*/
+    /*> .el-row {*/
+    /*padding: 10px 0;*/
+    /*}*/
+    /*.el-form-item {*/
+    /*margin-bottom: 0;*/
+    /*}*/
+    /*.search-filters-screen {*/
+    /*.el-select .el-input {*/
+    /*width: 180px;*/
+    /*}*/
+    /*.el-input-group__prepend {*/
+    /*background-color: #fff;*/
+    /*}*/
+    /*}*/
+    /*.el-input {*/
+    /*width: 100%;*/
+    /*}*/
+    /*.el-select {*/
+    /*width: 100%;*/
+    /*}*/
+    /*.el-date-editor--daterange {*/
+    /*&.el-input__inner {*/
+    /*width: 100%;*/
+    /*}*/
+    /*}*/
     /*}*/
 
 </style>

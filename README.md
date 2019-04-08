@@ -31,7 +31,7 @@ npm run build
     * vuex
     * App.vue
     * main.js - main file
-    * routes.js
+    * routesJs.js.bak
 * static - static assets
 
 # Theme

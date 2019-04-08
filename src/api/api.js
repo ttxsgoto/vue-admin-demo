@@ -13,23 +13,19 @@ const api01 = {
             }
         }
     },
-    searchCustomerList01: {
-        url: '/api/v1/consumer/',
-        method: 'get',
-        desc: '获取客户列表',
-        param: {}
-    },
-    getCustomerDetlil01: {
-        url: '/api/v1/consumer/:id/',
-        method: 'get',
-        desc: '获取客户详情',
-        param: {}
-    },
     searchCustomerPayList: {
         url: '/api/v1/payer/',
         method: 'GET',
         desc: '查询付款方列表',
         param: {}
+    },
+    getSupplierList: {
+        url: '/api/v1/inout-supplier-pay/',
+        method: 'get',
+        desc: '供应商应付列表',
+        param: {
+
+        }
     },
 };
 
