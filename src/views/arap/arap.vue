@@ -208,7 +208,7 @@
             },
             handleClick: function(tab, event) {
                 if (tab.name === 'payment') {
-                    this.$router.push({ path: "/arap/paymentManage" });
+                    this.$router.push({ path: "/paymentManage" });
                 }
             },
 

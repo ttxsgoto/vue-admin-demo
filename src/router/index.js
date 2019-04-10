@@ -16,6 +16,7 @@ import Page5 from '../views/nav2/Page5.vue'
 import Page6 from '../views/nav3/Page6.vue'
 import echarts from '../views/charts/echarts.vue'
 import arap from '../views/arap/arap'
+import paymentManage from '../views/arap/supplierMeetManage/paymentManage'
 // import VueRouter from "../main";
 
 let routes = [
@@ -80,9 +81,18 @@ let routes = [
         iconCls: 'el-icon-message',//图标样式class
         children: [
             {path: '/supplierManage', component: arap, name: '供应商管理',},
-            {path: '/paymentManage', component: Table, name: '付款方管理'},
+            // {path: '/paymentManage', component: Table, name: '付款方管理'},
             // {path: '/form', component: Form, name: 'Form'},
             // {path: '/user', component: user, name: '列表'},
+        ]
+    },
+    {
+        path: '/paymentManage',
+        component: Home,
+        name: '付款方管理',
+        hidden: true,
+        children: [
+            {path: '/paymentManage', component: paymentManage, name: '付款方管理',}
         ]
     },
     {

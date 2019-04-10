@@ -60,16 +60,16 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <payment-manage-dialog :arap-dialog="arapDialog" v-on:closeDialogBtn="closeDialog" :arap-row="arapRow"></payment-manage-dialog>
+    <!--<payment-manage-dialog :arap-dialog="arapDialog" v-on:closeDialogBtn="closeDialog" :arap-row="arapRow"></payment-manage-dialog>-->
   </div>
 </template>
 <script>
-import paymentManageDialog from '@/components/arap/paymentManageDialog';
+// import paymentManageDialog from '@/components/arap/paymentManageDialog';
 export default {
   name: 'paymentManage',
-  components: {
-    paymentManageDialog: paymentManageDialog
-  },
+  // components: {
+  //   paymentManageDialog: paymentManageDialog
+  // },
   computed: {
 
   },
@@ -158,7 +158,7 @@ export default {
 
       this.pageLoading = true;
 
-      this.$$http('getSupplierPaymentList', postData).then((results) => {
+      this.$$http01('getSupplierPaymentList', postData).then((results) => {
         this.pageLoading = false;
         if (results.data && results.data.code == 0) {
           this.tableData = results.data.data.data;
