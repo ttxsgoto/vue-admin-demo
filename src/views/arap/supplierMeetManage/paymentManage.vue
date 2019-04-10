@@ -158,7 +158,7 @@ export default {
 
       this.pageLoading = true;
 
-      this.$$http01('getSupplierPaymentList', postData).then((results) => {
+      this.$$http01('getPaymentList', postData).then((results) => {
         this.pageLoading = false;
         if (results.data && results.data.code == 0) {
           this.tableData = results.data.data.data;
@@ -171,7 +171,7 @@ export default {
     },
     handleClick: function(tab, event) {
       if (tab.name === 'meet') {
-        this.$router.push({ path: "/arap/supplierMeetManage/supplierMeetList" });
+        this.$router.push({ path: "/supplierManage" });
       }
     },
     pageChange: function() {

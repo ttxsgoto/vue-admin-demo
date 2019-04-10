@@ -27,6 +27,14 @@ const api01 = {
 
         }
     },
+    getPaymentList: {
+        url: '/api/v1/supplier-pay/',
+        method: 'get',
+        desc: '付款列表',
+        param: {
+
+        }
+    },
 };
 
 export default api01
