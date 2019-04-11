@@ -23,17 +23,31 @@ const api01 = {
         url: '/api/v1/inout-supplier-pay/',
         method: 'get',
         desc: '供应商应付列表',
-        param: {
-
-        }
+        param: {}
     },
     getPaymentList: {
         url: '/api/v1/supplier-pay/',
         method: 'get',
         desc: '付款列表',
-        param: {
-
-        }
+        param: {}
+    },
+    SupplierList: {
+        url: '/api/v1/suppliers/',
+        method: 'get',
+        desc: '查询供应商列表',
+        param: {}
+    },
+    updateSupplierPay: {
+        url: '/api/v1/supplier-pay/:id/',
+        method: 'patch',
+        desc: '更新供应商付款',
+        param: {}
+    },
+    addSupplierPay: {
+        url: '/api/v1/supplier-pay/',
+        method: 'post',
+        desc: '付款新增',
+        param: {}
     },
 };
 
